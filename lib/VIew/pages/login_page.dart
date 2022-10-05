@@ -3,70 +3,101 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:o_mobile/Model/consts.dart';
 
 class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
   FocusNode nodeOne = FocusNode();
   FocusNode nodeTwo = FocusNode();
   var kodController = TextEditingController();
   var izohController = TextEditingController();
 
-  void onTapButton(BuildContext context) {
-    if (kodController.text.length != 9) {
-      showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-                title: const Text('Xatolik!'),
-                content: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Image.asset(
-                        'images/error.png',
-                        fit: BoxFit.cover,
-                      ),
-                      const Text('Kiritilgan kod yaroqli emas'),
-                    ],
+  Future<void> onTapButton(BuildContext context) async {
+    if (kodController.text.isNotEmpty) {
+      if (kodController.text.length != 9) {
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  title: const Text('Xatolik!'),
+                  content: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          'images/error.png',
+                          fit: BoxFit.cover,
+                        ),
+                        const Text('Kiritilgan kod yaroqli emas'),
+                      ],
+                    ),
                   ),
-                ),
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text(
-                        'Ok',
-                        style: GoogleFonts.montserrat(color: kprimaryColor),
-                      ))
-                ],
-              ));
-    } else {
-      //TODO internet connection check
-      sentData(kodController.text, izohController.text);
-      //TODO then
-      showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-                title: const Text('Done'),
-                content: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Image.asset(
-                        'images/done.png',
-                        fit: BoxFit.cover,
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          'Ok',
+                          style: GoogleFonts.montserrat(color: kprimaryColor),
+                        ))
+                  ],
+                ));
+      } else {
+        bool connectionStatus = await CheckUserConnection();
+        if (connectionStatus) {
+          sentData(kodController.text, izohController.text);
+          showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                    title: const Text('Done'),
+                    content: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Image.asset(
+                            'images/done.png',
+                            fit: BoxFit.cover,
+                          ),
+                          const Text('So\'rov jo\'natildi'),
+                        ],
                       ),
-                      const Text('So\'rov jo\'natildi'),
+                    ),
+                    actions: [
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text(
+                            'Ok',
+                            style: GoogleFonts.montserrat(color: kprimaryColor),
+                          ))
                     ],
-                  ),
+                  ));
+        } else {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('No Internet'),
+              content: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Image.asset(
+                      'images/no internet.jpg',
+                      fit: BoxFit.cover,
+                    ),
+                    const Text('Internetga ulanishda muammo'),
+                  ],
                 ),
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text(
-                        'Ok',
-                        style: GoogleFonts.montserrat(color: kprimaryColor),
-                      ))
-                ],
-              ));
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'Ok',
+                    style: GoogleFonts.montserrat(color: kprimaryColor),
+                  ),
+                )
+              ],
+            ),
+          );
+        }
+      }
     }
   }
 
@@ -106,8 +137,7 @@ class LoginPage extends StatelessWidget {
                     labelText: 'Kod',
                     labelStyle: TextStyle(color: kprimaryColor)),
                 controller: kodController,
-                onSubmitted: (val) {
-                  print(val);
+                onSubmitted: (_) {
                   FocusScope.of(context).requestFocus(nodeTwo);
                 },
               ),
@@ -125,16 +155,14 @@ class LoginPage extends StatelessWidget {
                     labelText: 'Izoh',
                     labelStyle: TextStyle(color: kprimaryColor)),
                 controller: izohController,
-                onSubmitted: (txt) {
-                  //TODO sent
-                  onTapButton(context);
+                onSubmitted: (txt) async {
+                  await onTapButton(context);
                 },
               ),
               const SizedBox(height: 20),
               GestureDetector(
-                onTap: () {
-                  //TODO sent
-                  onTapButton(context);
+                onTap: () async {
+                  await onTapButton(context);
                 },
                 child: Container(
                   width: double.infinity,
