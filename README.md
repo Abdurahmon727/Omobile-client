@@ -1,16 +1,12 @@
 # o_mobile
 
-A new Flutter project.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+## Project in nutshell
 
-A few resources to get you started if this is your first Flutter project:
+For this project there is 2 application, one for client and one for operator or admin.
+This app is client site.
+Using Firebase&FireStore when client sents code and details using app, firestore saves those code and details on particular path. 
+Then This information appears on Operator&Admin's app
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
