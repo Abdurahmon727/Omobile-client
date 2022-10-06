@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -13,17 +11,4 @@ void sentData(String number, String izoh) async {
   var db = FirebaseFirestore.instance.collection('data').doc(number);
   Map<String, String> order = {'kod': number, 'izoh': izoh};
   db.set(order);
-}
-
-Future<bool> CheckUserConnection() async {
-  try {
-    final result = await InternetAddress.lookup('google.com');
-    if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-      return true;
-    } else {
-      return false;
-    }
-  } on SocketException catch (_) {
-    return false;
-  }
 }

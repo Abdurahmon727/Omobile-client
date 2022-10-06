@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:o_mobile/Model/consts.dart';
 
 class LoginPage extends StatelessWidget {
@@ -14,7 +15,7 @@ class LoginPage extends StatelessWidget {
         showDialog(
             context: context,
             builder: (context) => AlertDialog(
-                  title: const Text('Xatolik!'),
+                  title: const Text('Хато'),
                   content: SingleChildScrollView(
                     child: Column(
                       children: [
@@ -22,7 +23,7 @@ class LoginPage extends StatelessWidget {
                           'images/error.png',
                           fit: BoxFit.cover,
                         ),
-                        const Text('Kiritilgan kod yaroqli emas'),
+                        const Text('Рақами Нодуруст'),
                       ],
                     ),
                   ),
@@ -38,13 +39,13 @@ class LoginPage extends StatelessWidget {
                   ],
                 ));
       } else {
-        bool connectionStatus = await CheckUserConnection();
+        bool connectionStatus = await InternetConnectionChecker().hasConnection;
         if (connectionStatus) {
           sentData(kodController.text, izohController.text);
           showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                    title: const Text('Done'),
+                    title: const Text('фиристоданд'),
                     content: SingleChildScrollView(
                       child: Column(
                         children: [
@@ -52,7 +53,10 @@ class LoginPage extends StatelessWidget {
                             'images/done.png',
                             fit: BoxFit.cover,
                           ),
-                          const Text('So\'rov jo\'natildi'),
+                          const Text(
+                            'Дархост ба навбат гузошта шуд ба зуди Иҷро  мешавад',
+                            textAlign: TextAlign.center,
+                          ),
                         ],
                       ),
                     ),
@@ -79,7 +83,7 @@ class LoginPage extends StatelessWidget {
                       'images/no internet.jpg',
                       fit: BoxFit.cover,
                     ),
-                    const Text('Internetga ulanishda muammo'),
+                    const Text('Дертар такрор кунед'),
                   ],
                 ),
               ),
@@ -107,7 +111,7 @@ class LoginPage extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Column(children: [
               const SizedBox(height: 120),
               const Text(
@@ -120,7 +124,7 @@ class LoginPage extends StatelessWidget {
               ),
               const SizedBox(height: 120),
               const Text(
-                '*Kod va izoh kiriting',
+                'Барномаи Операторони Фаъоли Ширкати Omobile Барои кушодани Лимити Тарофа ва Дигар  Хизматрасонхо \n1) Рақами Худро нависед \n2)Дархости Худро нависед \nВа ба мо Фиристед',
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
@@ -134,7 +138,7 @@ class LoginPage extends StatelessWidget {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                     ),
-                    labelText: 'Kod',
+                    labelText: 'Рақами Omobile',
                     labelStyle: TextStyle(color: kprimaryColor)),
                 controller: kodController,
                 onSubmitted: (_) {
@@ -152,7 +156,7 @@ class LoginPage extends StatelessWidget {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                     ),
-                    labelText: 'Izoh',
+                    labelText: 'Дархостро нависед',
                     labelStyle: TextStyle(color: kprimaryColor)),
                 controller: izohController,
                 onSubmitted: (txt) async {
@@ -170,7 +174,7 @@ class LoginPage extends StatelessWidget {
                   decoration: const BoxDecoration(
                       color: kprimaryColor,
                       borderRadius: BorderRadius.all(Radius.circular(30))),
-                  child: const Center(child: Text('Jo\'natish')),
+                  child: const Center(child: Text('Фиристодани Дархост')),
                 ),
               ),
             ]),
